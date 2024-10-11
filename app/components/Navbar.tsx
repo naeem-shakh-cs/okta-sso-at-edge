@@ -1,5 +1,4 @@
 import { Disclosure } from "@headlessui/react";
-import DarkThemeButton from "./DarkThemeButton";
 import { Link } from "@remix-run/react";
 
 export default function Navbar() {
@@ -18,7 +17,6 @@ export default function Navbar() {
                 <div className="sm:flex space-x-8 items-center">
                   <nav className="flex justify-center space-x-10 py-4">
                   </nav>
-                  <DarkThemeButton />
                 </div>
               </div>
             </div>

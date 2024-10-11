@@ -10,9 +10,9 @@ import {
 } from "@remix-run/react";
 
 import stylesheet from "~/tailwind.css?url";
-import { darkSessionResolver } from "./utils/session.server";
 import {
   PreventFlashOnWrongTheme,
+  Theme,
   ThemeProvider,
   useTheme,
 } from "remix-themes";
@@ -24,12 +24,12 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
 ];
 
-//use a loader in order to get data
+// Use a loader in order to get data
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { getTheme } = await darkSessionResolver(request);
+  const themeFromEnv = (process.env.DEFAULT_THEME || "") as Theme;
 
   return {
-    theme: getTheme(),
+    theme: themeFromEnv,
   };
 }
 
@@ -44,7 +44,6 @@ export default function AppWithProvider() {
 }
 
 function App() {
-  //get theme here
   const { theme } = useLoaderData<typeof loader>();
   const [dTheme] = useTheme();
   return (
@@ -61,7 +60,7 @@ function App() {
         <PreventFlashOnWrongTheme ssrTheme={Boolean(theme)} />
         <Links />
       </head>
-      <body className="bg-white text-black dark:bg-black  dark:text-white">
+      <body className="bg-white text-black dark:bg-black dark:text-white">
         <Layout>
           <Outlet />
           <ScrollRestoration />
