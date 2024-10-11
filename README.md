@@ -22,3 +22,4 @@ npm run dev
 
 Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
 
+To Set your theme update the env variable `DEFAULT_THEME` to any of the supported values `light`, `dark`, `mint`, `dust` & `water`

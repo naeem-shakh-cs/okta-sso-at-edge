@@ -7,7 +7,7 @@ export default function Navbar() {
       <Disclosure as="header">
         {({ open }) => (
           <>
-            <div className="mx-auto max-w-screen-xl px-6 dark:text-white">
+            <div className="mx-auto max-w-screen-xl px-6 dark:text-white green:text-white">
               <div className="flex justify-between items-center py-4">
                 <div>
                   <Link to="https://www.contentstack.com/platforms/headless-cms" target="_blank" className="text-3xl font-bold">

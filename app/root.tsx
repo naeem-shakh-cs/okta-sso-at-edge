@@ -24,9 +24,8 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
 ];
 
-// Use a loader in order to get data
 export async function loader({ request }: LoaderFunctionArgs) {
-  const themeFromEnv = (process.env.DEFAULT_THEME || "") as Theme;
+  const themeFromEnv = (process.env.DEFAULT_THEME || "light") as Theme;
 
   return {
     theme: themeFromEnv,
@@ -45,9 +44,8 @@ export default function AppWithProvider() {
 
 function App() {
   const { theme } = useLoaderData<typeof loader>();
-  const [dTheme] = useTheme();
   return (
-    <html lang="en" data-theme={dTheme ?? ""}>
+    <html lang="en" data-theme={theme ?? ""}>
       <head>
         <meta charSet="utf-8" />
         <meta
@@ -60,7 +58,7 @@ function App() {
         <PreventFlashOnWrongTheme ssrTheme={Boolean(theme)} />
         <Links />
       </head>
-      <body className="bg-white text-black dark:bg-black dark:text-white">
+      <body className="light:bg-white light:text-black dark:bg-black dark:text-white mint:text[#213540]">
         <Layout>
           <Outlet />
           <ScrollRestoration />

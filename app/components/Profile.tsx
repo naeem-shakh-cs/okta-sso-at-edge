@@ -23,13 +23,13 @@ export default function Profile({ imageSrc, name, title, description, linkedinUr
         
       />
       <div className="grid grid-cols-1 gap-2 text-center">
-        <h1 className="font-sans font-semibold tracking-tighter dark:text-white text-slate-800 text-3xl md:text-4xl">
+        <h1 className="font-sans font-semibold tracking-tighter dark:text-white green:text-white text-slate-800 text-3xl md:text-4xl">
           {name}
         </h1>
-        <p className="font-sans font-semibold text-xl italic font-se eading-normal tracking-tight dark:text-slate-400 text-slate-700">
+        <p className="font-sans font-semibold text-xl italic font-se eading-normal tracking-tight dark:text-slate-400 green:text-slate-400 text-slate-700">
           {title}
         </p>
-        <p className="font-serif text-md italic font-se eading-normal tracking-tight dark:text-slate-400 text-slate-700 pt-8">
+        <p className="font-serif text-md italic font-se eading-normal tracking-tight dark:text-slate-400 green:text-slate-400 text-slate-700 pt-8">
           {description}
         </p>
       </div>
