@@ -6,11 +6,13 @@ interface ContactsProps {
     githubUrl: string;
   }
 const Contacts= ({linkedinUrl, githubUrl}:ContactsProps) => {
-    const LinekdinIcon: ReactElement = (
-      <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20" fill="#fff">
-      <path d="M4.98 3.5C4.98 4.88 3.84 6 2.5 6S0 4.88 0 3.5 1.14 1 2.5 1 4.98 2.12 4.98 3.5zM0 9h5v15H0V9zm15.12 0c-1.74 0-2.73.95-3.2 1.84V9h-5v15h5v-7.5c0-1.84 1.1-2.84 2.9-2.84 1.73 0 2.8 1.2 2.8 2.94V24h5v-10.5c0-4.14-2.24-6.6-5.88-6.6z"/>
-  </svg></span>
-    );
+  const LinekdinIcon: ReactElement = (
+    <span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+            <path d="M22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.21 0 22.23 0zM7.12 20.45H3.56V9h3.56v11.45zM5.34 7.58c-1.14 0-2.06-.92-2.06-2.06s.92-2.06 2.06-2.06 2.06.92 2.06 2.06-.92 2.06-2.06 2.06zM20.45 20.45h-3.56v-5.61c0-1.34-.03-3.06-1.86-3.06-1.86 0-2.14 1.45-2.14 2.95v5.72h-3.56V9h3.42v1.56h.05c.48-.91 1.65-1.86 3.4-1.86 3.63 0 4.3 2.39 4.3 5.5v6.25z"/>
+        </svg>
+    </span>
+);
   
     const GithubIcon: ReactElement = (
       <span><svg
