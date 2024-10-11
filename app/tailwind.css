@@ -19,7 +19,7 @@ body {
 [data-theme="mint"] {
     --tw-bg-opacity: 1;
     background-color: #c4d4c8;
-    color:#213540
+    color: #213540;
 }
 
 [data-theme="light"] {
@@ -31,7 +31,6 @@ body {
     --tw-bg-opacity: 1;
     background-color: #eed6d3;
 }
-
 
 [data-theme="water"] {
     --tw-bg-opacity: 1;
