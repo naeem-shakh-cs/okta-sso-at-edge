@@ -9,9 +9,10 @@ interface ProfileProps {
   height: number;
   linkedinUrl: string;
   githubUrl: string;
+  xUrl: string;
 }
 
-export default function Profile({ imageSrc, name, title, description, linkedinUrl, githubUrl, width, height }: ProfileProps) {
+export default function Profile({ imageSrc, name, title, description, linkedinUrl, githubUrl, xUrl, width, height }: ProfileProps) {
   return (
     <div className="grid max-w-lg grid-cols-1 justify-items-center gap-4 mb-4 mx-auto">
       <img
@@ -33,7 +34,7 @@ export default function Profile({ imageSrc, name, title, description, linkedinUr
           {description}
         </p>
       </div>
-      <Contacts linkedinUrl={linkedinUrl} githubUrl={githubUrl}/>
+      <Contacts linkedinUrl={linkedinUrl} githubUrl={githubUrl} xUrl={xUrl}/>
     </div>
   );
 }
