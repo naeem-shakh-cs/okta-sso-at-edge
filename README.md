@@ -14,6 +14,7 @@ To run your Remix app locally, make sure your project's local dependencies are i
 npm install
 ```
 
+Create a `.env` file at the root and Set you contentstack environment variables as mentioned in `.env.example`
 Afterwards, start the Remix development server like so:
 
 ```sh
