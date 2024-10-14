@@ -1,16 +1,14 @@
-import contentstack from "@contentstack/delivery-sdk";
+import Contentstack from 'contentstack'
 import { Entry } from "./interface";
-
-const stack = contentstack.stack({
-  apiKey: process.env.CONTENTSTACK_API_KEY as string,
-  deliveryToken: process.env.CONTENTSTACK_DELIVERY_TOKEN as string,
+const Stack = Contentstack.Stack({
+  api_key: process.env.CONTENTSTACK_API_KEY as string,
+  delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN as string,
   environment: process.env.CONTENTSTACK_ENVIRONMENT as string,
 });
-
 export async function fetchEntries(): Promise<Entry> {
-  const result: Entry = await stack
-    .contentType(process.env.CONTENTSTACK_CONTENT_TYPE as string)
-    .entry(process.env.CONTENTSTACK_ENTRY_UID as string)
-    .fetch();
+  const result: Entry = await Stack
+    .ContentType(process.env.CONTENTSTACK_CONTENT_TYPE as string)
+    .Entry(process.env.CONTENTSTACK_ENTRY_UID as string)
+    .toJSON().fetch();
   return result;
 }

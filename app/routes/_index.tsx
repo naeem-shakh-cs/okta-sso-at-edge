@@ -15,16 +15,6 @@ interface AppProps {
 
 export async function loader({ }: LoaderFunctionArgs) {
   const entry = await fetchEntries();
-  // const entry: Entry = {
-  //   name: "Chhavi Mandowara",
-  //   title: "Software Engineer @ Contentstack",
-  //   short_bio: "Creative software engineer skilled in full-stack development, specializing in building scalable applications. Enthusiastic about leveraging cutting-edge technologies and collaborating in agile teams to deliver impactful solutions.",
-  //   linkedin: "https://www.linkedin.com/in/chhavi-mandowara-497a27262/",
-  //   github: "https://github.com/chhavi-mandowara",
-  //   image: 'https://media.licdn.com/dms/image/v2/D4E03AQEZ3kGiHE8vNA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1685809844546?e=1733961600&v=beta&t=CkgG3LZEmkhiLS90gv9kml1ZCqnc7iMcAo6uXwqRBjc',
-  //   tags: [],
-  // };
-  console.log(entry);
   return json({ entry });
 }
 
