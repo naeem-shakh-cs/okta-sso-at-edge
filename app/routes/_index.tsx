@@ -14,7 +14,7 @@ interface AppProps {
 }
 
 export async function loader({ }: LoaderFunctionArgs) {
-  const [entry, asset] = await Promise.all([fetchEntries(), fetchAsset()])
+  const [entry, asset] = await Promise.all([fetchEntries(), fetchAsset()]);
   return json({ entry:{...entry, dp: (asset.url || '/cs_logo.png')} });
 }
 

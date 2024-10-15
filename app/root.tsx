@@ -49,11 +49,11 @@ function App() {
         <meta charSet="utf-8" />
         <meta
           name="description"
-          content="A minimalistic remix portfolio template"
+          content="My portfolio website built with Remix"
         />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
-        <title>Remix Portfolio Template</title>
+        <title>My portfolio</title>
         <PreventFlashOnWrongTheme ssrTheme={Boolean(theme)} />
         <Links />
       </head>
