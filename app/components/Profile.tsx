@@ -1,9 +1,9 @@
 import Contacts from "./Contacts";
 
 interface ProfileProps {
-  imageSrc: string;
+  dp: string;
   name: string;
-  title: string;
+  designation: string;
   description: string;
   width: number;
   height: number;
@@ -12,11 +12,11 @@ interface ProfileProps {
   xUrl: string;
 }
 
-export default function Profile({ imageSrc, name, title, description, linkedinUrl, githubUrl, xUrl, width, height }: ProfileProps) {
+export default function Profile({ dp, name, designation, description, linkedinUrl, githubUrl, xUrl, width, height }: ProfileProps) {
   return (
     <div className="grid max-w-lg grid-cols-1 justify-items-center gap-4 mb-4 mx-auto">
       <img
-        src={imageSrc}
+        src={dp}
         alt={name}
         className="h-auto max-w-32 rounded-full overflow-hidden" // Adjust max-w-xs to suit your design
         width={width}
@@ -28,7 +28,7 @@ export default function Profile({ imageSrc, name, title, description, linkedinUr
           {name}
         </h1>
         <p className="font-sans font-semibold text-xl italic font-se eading-normal tracking-tight dark:text-slate-400 mint:text-black text-slate-700">
-          {title}
+          {designation}
         </p>
         <p className="font-serif text-md italic font-se eading-normal tracking-tight dark:text-slate-400 mint:text-black text-slate-700 pt-8">
           {description}

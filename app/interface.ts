@@ -1,10 +1,9 @@
 export type Entry = {
   name: string;
-  title: string;
-  short_bio: string;
+  designation: string;
+  description: string;
   linkedin: string;
   github: string;
-  image: string;
-  tags: string[];
+  dp: string;
   x: string;
 }

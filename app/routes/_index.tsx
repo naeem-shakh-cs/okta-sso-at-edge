@@ -23,10 +23,10 @@ export default function Index() {
   return (
     <div>
       <Profile
-        imageSrc={entry.image}
+        dp={entry.dp}
         name={entry.name}
-        title={entry.title}
-        description={entry.short_bio}
+        designation={entry.designation}
+        description={entry.description}
         width={200}
         height={200}
         linkedinUrl={entry.linkedin}
