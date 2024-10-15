@@ -18,7 +18,6 @@ import {
 } from "remix-themes";
 
 import { ReactNode } from "react";
-import Navbar from "./components/Navbar";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -72,8 +71,7 @@ function App() {
 function Layout({ children }: { children: ReactNode }) {
   return (
     <div>
-      <Navbar />
-      <main className=" max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 mt-5">
+      <main className=" max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 mt-20">
         {children}
       </main>
     </div>
