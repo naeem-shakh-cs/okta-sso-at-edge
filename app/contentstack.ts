@@ -14,6 +14,10 @@ export async function fetchEntries(): Promise<Entry> {
 }
 
 export async function fetchAsset(): Promise<any> {
-  const result = await Stack.Assets(process.env.CONTENTSTACK_ASSET_UID as string).toJSON().fetch();
-  return result;
+  try{
+    const result = await Stack.Assets(process.env.CONTENTSTACK_ASSET_UID as string).toJSON().fetch();
+    return result;
+  }catch(e){
+    return {}
+  }
 }
