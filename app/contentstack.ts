@@ -1,9 +1,10 @@
-import Contentstack from 'contentstack'
+import Contentstack, { Region } from 'contentstack'
 import { Entry } from "./interface";
 const Stack = Contentstack.Stack({
   api_key: process.env.CONTENTSTACK_API_KEY as string,
   delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN as string,
   environment: process.env.CONTENTSTACK_ENVIRONMENT as string,
+  region: 'eu' as Region,
 });
 export async function fetchEntries(): Promise<Entry> {
   const result: Entry = await Stack
