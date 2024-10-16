@@ -10,19 +10,27 @@ body {
     --tw-bg-opacity: 1;
     background-color: #c4d4c8;
     color: #213540;
+    --theme-text-color: #213540;
 }
 
 [data-theme="light"] {
     --tw-bg-opacity: 1;
     background-color: #fefffe;
+    --theme-text-color: #000;
 }
 
 [data-theme="dust"] {
     --tw-bg-opacity: 1;
     background-color: #eed6d3;
+    --theme-text-color: #333;
 }
 
 [data-theme="water"] {
     --tw-bg-opacity: 1;
     background-color: #d4f1f4;
+    --theme-text-color: #333;
+}
+
+.text-theme-text {
+  color: var(--theme-text-color);
 }
