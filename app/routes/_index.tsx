@@ -7,15 +7,23 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Entry } from "~/interface";
 import Footer from "~/components/Footer";
-import { fetchAsset, fetchEntries } from "~/contentstack";
 
 interface AppProps {
   entry: Entry;
 }
 
 export async function loader({ }: LoaderFunctionArgs) {
-  const [entry, asset] = await Promise.all([fetchEntries(), fetchAsset()]);
-  return json({ entry:{...entry, dp: (asset.url || '/cs_logo.png')} });
+  return json({ 
+    entry: {
+      name: 'Naeem Shaikh',
+      designation: 'Software Engineer @ Contentstack',
+      description: 'I am a software engineer with a passion & experience in building scalable and reliable software systems.',
+      linkedin: 'https://www.linkedin.com/in/naeem-shaikh',
+      github:'https://github.com/naeemshaikh27',
+      x:'',
+      dp:  '/cs_logo.png'
+    } 
+  });
 }
 
 export default function Index() {
