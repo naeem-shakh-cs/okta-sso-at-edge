@@ -7,7 +7,7 @@ import { parse } from 'fast-xml-parser';
 export default async function handler(request, context) {
   const oktaDomain = context.env.OKTA_DOMAIN;
   const redirectUri = context.env.REDIRECT_URI;
-  const samlEndpoint = `${oktaDomain}/app/your-app-id/sso/saml`;
+  const samlEndpoint = context.env.OKTA_SAML_ENDPOINT;
   const samlRequest = generateSAMLRequest(redirectUri, samlEndpoint, oktaDomain);
 
   const url = new URL(request.url);
