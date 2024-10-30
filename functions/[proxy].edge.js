@@ -4,10 +4,10 @@ import { parse } from 'fast-xml-parser';
  * @param {Request} request - The incoming request object
  * @returns {Promise<Response>} - The response from the modified request
  */
-export default async function handler(request) {
-  const oktaDomain = 'https://your-okta-domain.okta.com';
+export default async function handler(request, context) {
+  const oktaDomain = context.env.OKTA_DOMAIN;
+  const redirectUri = context.env.REDIRECT_URI;
   const samlEndpoint = `${oktaDomain}/app/your-app-id/sso/saml`;
-  const redirectUri = 'https://your-cloudflare-worker-url/callback';
   const samlRequest = generateSAMLRequest(redirectUri, samlEndpoint, oktaDomain);
 
   const url = new URL(request.url);
