@@ -15,15 +15,6 @@ export default async function handler(request, context) {
   const cookies = request.headers.get('Cookie') || '';
   const isAuthenticated = cookies.includes('saml-token');
 
-  if (!isAuthenticated) {
-    return new Response(null, {
-      status: 302,
-      headers: {
-        'Location': `${samlEndpoint}?SAMLRequest=${samlRequest}`
-      }
-    });
-  }
-
   if (url.pathname === '/callback') {
     const params = new URLSearchParams(url.search);
     const samlResponse = params.get('SAMLResponse');
@@ -42,17 +33,17 @@ export default async function handler(request, context) {
 
     return new Response('Authentication failed', { status: 401 });
   }
-
+  if (!isAuthenticated) {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        'Location': `${samlEndpoint}`//`${samlEndpoint}?SAMLRequest=${samlRequest}`
+      }
+    });
+  }
   return new Response('Authenticated', { status: 200 });
 }
 
-/**
- * Generates a SAML request.
- * @param {string} redirectUri - The URI to redirect to after authentication.
- * @param {string} samlEndpoint - The SAML endpoint URL.
- * @param {string} oktaDomain - The Okta domain.
- * @returns {string} - The base64-encoded SAML request.
- */
 function generateSAMLRequest(redirectUri, oktaDomain, spEntityId) {
     const issueInstant = new Date().toISOString();
     const notOnOrAfter = new Date(Date.now() + 5 * 60 * 1000).toISOString(); // 5 minutes validity
