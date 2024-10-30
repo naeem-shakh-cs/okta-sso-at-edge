@@ -8,7 +8,8 @@ export default async function handler(request, context) {
   const oktaDomain = context.env.OKTA_DOMAIN;
   const redirectUri = context.env.REDIRECT_URI;
   const samlEndpoint = context.env.OKTA_SAML_ENDPOINT;
-  const samlRequest = generateSAMLRequest(redirectUri, samlEndpoint, oktaDomain);
+  const spEntityId = context.env.OKTA_SP_ENTITY_ID;
+  const samlRequest = generateSAMLRequest(redirectUri, oktaDomain, spEntityId);
 
   const url = new URL(request.url);
   const cookies = request.headers.get('Cookie') || '';
@@ -52,19 +53,40 @@ export default async function handler(request, context) {
  * @param {string} oktaDomain - The Okta domain.
  * @returns {string} - The base64-encoded SAML request.
  */
-function generateSAMLRequest(redirectUri, samlEndpoint, oktaDomain) {
-  const samlRequestXml = `
-    <samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" 
-                        ID="_${generateUniqueId()}" 
-                        Version="2.0" 
-                        IssueInstant="${new Date().toISOString()}" 
-                        Destination="${samlEndpoint}" 
-                        AssertionConsumerServiceURL="${redirectUri}">
-      <saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">${oktaDomain}</saml:Issuer>
-    </samlp:AuthnRequest>
-  `;
-  return base64Encode(samlRequestXml);
-}
+function generateSAMLRequest(redirectUri, oktaDomain, spEntityId) {
+    const issueInstant = new Date().toISOString();
+    const notOnOrAfter = new Date(Date.now() + 5 * 60 * 1000).toISOString(); // 5 minutes validity
+  
+    const samlRequestXml = `
+      <?xml version="1.0" encoding="UTF-8"?>
+      <saml2:Assertion ID="_${generateUniqueId()}" IssueInstant="${issueInstant}" Version="2.0"
+          xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">
+          
+          <saml2:Issuer Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">${oktaDomain}</saml2:Issuer>
+          
+          <saml2:Subject>
+              <saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+                  <saml2:SubjectConfirmationData NotOnOrAfter="${notOnOrAfter}" Recipient="${redirectUri}"/>
+              </saml2:SubjectConfirmation>
+          </saml2:Subject>
+  
+          <saml2:Conditions NotBefore="${issueInstant}" NotOnOrAfter="${notOnOrAfter}">
+              <saml2:AudienceRestriction>
+                  <saml2:Audience>${spEntityId}</saml2:Audience>
+              </saml2:AudienceRestriction>
+          </saml2:Conditions>
+  
+          <saml2:AuthnStatement AuthnInstant="${issueInstant}" SessionIndex="id${Date.now()}">
+              <saml2:AuthnContext>
+                  <saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</saml2:AuthnContextClassRef>
+              </saml2:AuthnContext>
+          </saml2:AuthnStatement>
+      </saml2:Assertion>
+    `;
+  
+    return base64Encode(samlRequestXml);
+  }
+  
 
 /**
  * Validates a SAML response.
