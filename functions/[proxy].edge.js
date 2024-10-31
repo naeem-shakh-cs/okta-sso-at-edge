@@ -16,11 +16,12 @@ export default async function handler(request, context) {
   const isAuthenticated = cookies.includes('saml-token');
 
   console.log(url.pathname);
-  if (url.pathname === '/callback') {
-    console.log('in callback');
-    const params = new URLSearchParams(url.search);
-    const samlResponse = params.get('SAMLResponse');
-
+  if (url.pathname === '/callback' && request.method === 'POST') {
+    console.log('In POST /callback');
+    
+    const formData = await request.formData();
+    const samlResponse = formData.get('SAMLResponse');
+  
     if (samlResponse) {
       const assertion = await validateSAMLResponse(samlResponse);
       if (assertion) {
@@ -32,7 +33,7 @@ export default async function handler(request, context) {
         });
       }
     }
-
+  
     return new Response('Authentication failed', { status: 401 });
   }
   console.log('outside callback');
