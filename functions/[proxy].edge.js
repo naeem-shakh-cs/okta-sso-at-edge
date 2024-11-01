@@ -20,7 +20,7 @@ export default async function handler(request, context) {
         return new Response(null, {
             status: 302,
             headers: {
-              'Set-Cookie': `saml-token=${assertion}; HttpOnly; Secure; Path=/`,
+              'Set-Cookie': `saml-token=${assertion}; HttpOnly; Secure; Path=/; expires=${new Date(new Date().getTime() + 60 * 60 * 1000).toUTCString()}`,
               'Location': '/'
             }
           });
@@ -65,7 +65,7 @@ async function verifySAMLResponseSignature(samlResponse, x509Cert, spEntityId) {
     const data = encoder.encode(signedInfo);
     console.log('encoded data')
     const isValid = await crypto.subtle.verify(
-      { name: "RSASSA-PKCS1-v1_5" },
+      { name: "RSA-OAEP" },
       publicKey,
       signatureArray,
       data
@@ -85,7 +85,7 @@ async function verifySAMLResponseSignature(samlResponse, x509Cert, spEntityId) {
     return await crypto.subtle.importKey(
       "spki",
       binaryDer.buffer,
-      { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+      { name: "RSA-OAEP", hash: "SHA-256" },
       true,
       ["verify"]
     );
