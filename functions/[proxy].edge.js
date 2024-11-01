@@ -55,11 +55,15 @@ async function verifySAMLResponseSignature(samlResponse, x509Cert, spEntityId) {
     if(!validEntityId) {
       return false;
     }
+    console.log('valid entity id')
     const publicKey = await importX509CertToCryptoKey(x509Cert);
+    console.log('valid import')
     const signatureArray = Uint8Array.from(atob(signatureValue), c => c.charCodeAt(0));
     
+    console.log('signature array')
     const encoder = new TextEncoder();
     const data = encoder.encode(signedInfo);
+    console.log('encoded data')
     const isValid = await crypto.subtle.verify(
       { name: "RSASSA-PKCS1-v1_5" },
       publicKey,
@@ -67,6 +71,7 @@ async function verifySAMLResponseSignature(samlResponse, x509Cert, spEntityId) {
       data
     );
   
+    console.log('verification done', isValid)
     return isValid;
   }
   
