@@ -15,9 +15,7 @@ export default async function handler(request, context) {
   const cookies = request.headers.get('Cookie') || '';
   const isAuthenticated = cookies.includes('saml-token');
 
-  console.log(url.pathname);
   if (url.pathname === '/callback' && request.method === 'POST') {
-    console.log('In POST /callback');
     
     const formData = await request.formData();
     const samlResponse = formData.get('SAMLResponse');
@@ -25,18 +23,18 @@ export default async function handler(request, context) {
     if (samlResponse) {
       const assertion = await validateSAMLResponse(samlResponse);
       if (assertion) {
-        return new Response('Authenticated', {
-          status: 200,
-          headers: {
-            'Set-Cookie': `saml-token=${assertion}; HttpOnly; Secure; Path=/`
-          }
-        });
+        return new Response(null, {
+            status: 302,
+            headers: {
+              'Set-Cookie': `saml-token=${assertion}; HttpOnly; Secure; Path=/`,
+              'Location': '/'
+            }
+          });
       }
     }
   
     return new Response('Authentication failed', { status: 401 });
   }
-  console.log('outside callback');
   if (!isAuthenticated) {
     return new Response(null, {
       status: 302,
@@ -45,7 +43,7 @@ export default async function handler(request, context) {
       }
     });
   }
-  return new Response('Authenticated', { status: 200 });
+  return fetch(request);
 }
   
 
@@ -56,9 +54,7 @@ export default async function handler(request, context) {
  */
 async function validateSAMLResponse(samlResponse) {
   const decodedResponse = base64Decode(samlResponse);
-  console.log(decodedResponse);
   const jsonObj = JSON.parse(xml2json(decodedResponse, { compact: true }));
-  console.log(jsonObj);
   const assertion = jsonObj['saml2p:Response']['saml2:Assertion'];
 
   if (assertion) {
