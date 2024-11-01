@@ -59,7 +59,7 @@ async function validateSAMLResponse(samlResponse) {
   console.log(decodedResponse);
   const jsonObj = JSON.parse(xml2json(decodedResponse, { compact: true }));
   console.log(jsonObj);
-  const assertion = jsonObj['saml:Assertion'];
+  const assertion = jsonObj['saml2p:Response']['saml2:Assertion'];
 
   if (assertion) {
     // Add additional validation logic as needed
