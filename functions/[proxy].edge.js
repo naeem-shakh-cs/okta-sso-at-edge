@@ -33,7 +33,7 @@ export default async function handler(request, context) {
     return new Response(null, {
       status: 302,
       headers: {
-        'Location': `${samlEndpoint}`//`${samlEndpoint}?SAMLRequest=${samlRequest}`
+        'Location': `${samlEndpoint}`
       }
     });
   }
@@ -55,12 +55,11 @@ async function verifySAMLResponseSignature(samlResponse, x509Cert, spEntityId) {
     if(!validEntityId) {
       return false;
     }
-    const canonicalSignedInfo = generateCanonicalXML(signedInfo);
     const publicKey = await importX509CertToCryptoKey(x509Cert);
     const signatureArray = Uint8Array.from(atob(signatureValue), c => c.charCodeAt(0));
     
     const encoder = new TextEncoder();
-    const data = encoder.encode(canonicalSignedInfo);
+    const data = encoder.encode(signedInfo);
     const isValid = await crypto.subtle.verify(
       { name: "RSASSA-PKCS1-v1_5" },
       publicKey,
@@ -92,46 +91,6 @@ async function verifySAMLResponseSignature(samlResponse, x509Cert, spEntityId) {
     return new TextDecoder().decode(Uint8Array.from(binary, c => c.charCodeAt(0)));
   }
   
-  function generateCanonicalXML(signedInfo) {
-    const xmlString = new XMLSerializer().serializeToString(signedInfo);
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "application/xml");
-  
-    return canonicalizeNode(xmlDoc.documentElement);
-  }
-
-  function canonicalizeNode(node) {
-    let result = `<${node.nodeName}`;
-    const attributes = Array.from(node.attributes).sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
-    for (const attr of attributes) {
-      result += ` ${attr.name}="${escapeXmlEntities(attr.value)}"`;
-    }
-  
-    result += ">";
-  
-    node.childNodes.forEach((child) => {
-      if (child.nodeType === Node.ELEMENT_NODE) {
-        result += canonicalizeNode(child);
-      } else if (child.nodeType === Node.TEXT_NODE) {
-        result += escapeXmlEntities(child.nodeValue);
-      }
-    });
-  
-    result += `</${node.nodeName}>`;
-    return result;
-  }
-  
-  function escapeXmlEntities(str) {
-    return str
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&apos;");
-  }
-
   function verifyEntityId(assertion, expectedEntityId) {
     try {
       const audience = assertion?.['saml2:Conditions']?.['saml2:AudienceRestriction']?.['saml2:Audience']?.['_text'];
