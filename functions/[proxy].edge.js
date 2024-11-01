@@ -1,4 +1,4 @@
-import { parse } from 'fast-xml-parser';
+import { xml2json } from 'xml-js';
 
 /**
  * @param {Request} request - The incoming request object
@@ -57,7 +57,7 @@ export default async function handler(request, context) {
 async function validateSAMLResponse(samlResponse) {
   const decodedResponse = base64Decode(samlResponse);
   console.log(decodedResponse);
-  const jsonObj = parse(decodedResponse);
+  const jsonObj = JSON.parse(xml2json(decodedResponse, { compact: true }));
   console.log(jsonObj);
   const assertion = jsonObj['saml:Assertion'];
 
