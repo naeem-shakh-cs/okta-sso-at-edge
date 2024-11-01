@@ -65,7 +65,7 @@ async function verifySAMLResponseSignature(samlResponse, x509Cert, spEntityId) {
     const data = encoder.encode(signedInfo);
     console.log('encoded data')
     const isValid = await crypto.subtle.verify(
-      { name: "RSA-OAEP" },
+      { name: "RSASSA-PKCS1-v1_5" },
       publicKey,
       signatureArray,
       data
@@ -76,16 +76,16 @@ async function verifySAMLResponseSignature(samlResponse, x509Cert, spEntityId) {
   }
   
   async function importX509CertToCryptoKey(x509Cert) {
-    const pem = x509Cert
-      .replace(/-----BEGIN CERTIFICATE-----/g, '')
-      .replace(/-----END CERTIFICATE-----/g, '')
-      .replace(/\s+/g, '');
-    const binaryDer = Uint8Array.from(atob(pem), char => char.charCodeAt(0));
+    // const pem = x509Cert
+    //   .replace(/-----BEGIN CERTIFICATE-----/g, '')
+    //   .replace(/-----END CERTIFICATE-----/g, '')
+    //   .replace(/\s+/g, '');
+    const binaryDer = Uint8Array.from(atob(x509Cert), char => char.charCodeAt(0));
   
     return await crypto.subtle.importKey(
       "spki",
       binaryDer.buffer,
-      { name: "RSA-OAEP", hash: "SHA-256" },
+      { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
       true,
       ["verify"]
     );
