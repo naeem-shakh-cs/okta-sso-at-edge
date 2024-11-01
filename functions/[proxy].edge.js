@@ -56,7 +56,9 @@ export default async function handler(request, context) {
  */
 async function validateSAMLResponse(samlResponse) {
   const decodedResponse = base64Decode(samlResponse);
+  console.log(decodedResponse);
   const jsonObj = parse(decodedResponse);
+  console.log(jsonObj);
   const assertion = jsonObj['saml:Assertion'];
 
   if (assertion) {
