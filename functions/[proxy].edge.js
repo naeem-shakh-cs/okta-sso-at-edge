@@ -46,9 +46,10 @@ async function verifySAMLResponseSignature(samlResponse, x509Cert, spEntityId) {
   
     const jsonResponse = JSON.parse(xml2json(decodedResponse, { compact: true }));
     console.log(jsonResponse)
-    const signatureValue = jsonResponse['saml2p:Response']['ds:Signature']['ds:SignatureValue']._text;
-    const signedInfo = jsonResponse['saml2p:Response']['ds:Signature']['ds:SignedInfo'];
     const assertion = jsonResponse['saml2p:Response']['saml2:Assertion'];
+    const signatureValue = assertion['ds:Signature']['ds:SignatureValue']._text;
+    const signedInfo = assertion['ds:Signature']['ds:SignedInfo'];
+    
   
     const validEntityId = verifyEntityId(assertion, spEntityId)
     if(!validEntityId) {
