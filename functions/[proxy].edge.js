@@ -44,7 +44,13 @@ export default async function handler(request, context) {
 async function verifySAMLResponseSignature(samlResponse, x509Cert, spEntityId) {
     const decodedResponse = base64Decode(samlResponse);
   
-    const jsonResponse = JSON.parse(xml2json(decodedResponse, { compact: true }));
+    let jsonResponse = {};
+    try{
+        jsonResponse = JSON.parse(xml2json(decodedResponse, { compact: true }));
+    }catch(e){
+        console.log('Invalid saml response');
+        return false;
+    }
     console.log(jsonResponse)
     const assertion = jsonResponse['saml2p:Response']['saml2:Assertion'];
     const signatureValue = assertion['ds:Signature']['ds:SignatureValue']._text;
@@ -76,11 +82,12 @@ async function verifySAMLResponseSignature(samlResponse, x509Cert, spEntityId) {
   }
   
   async function importX509CertToCryptoKey(x509Cert) {
-    // const pem = x509Cert
-    //   .replace(/-----BEGIN CERTIFICATE-----/g, '')
-    //   .replace(/-----END CERTIFICATE-----/g, '')
-    //   .replace(/\s+/g, '');
-    const binaryDer = Uint8Array.from(atob(x509Cert), char => char.charCodeAt(0));
+    const pem = x509Cert
+      .replace(/-----BEGIN CERTIFICATE-----/g, '')
+      .replace(/-----END CERTIFICATE-----/g, '')
+      .replace(/\n/g, '')
+      .replace(/\s+/g, '');
+    const binaryDer = Uint8Array.from(atob(pem), char => char.charCodeAt(0));
   
     return await crypto.subtle.importKey(
       "spki",
